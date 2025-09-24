@@ -168,6 +168,7 @@
     <ClCompile Include="source\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\GestorDeTicket.h" />
     <ClInclude Include="include\Prerequisites.h" />
     <ClInclude Include="include\Ticket.h" />
   </ItemGroup>
