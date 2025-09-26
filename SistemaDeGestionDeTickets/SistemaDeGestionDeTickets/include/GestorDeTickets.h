@@ -4,12 +4,13 @@
 class 
 GestorDeTickets {
 public:
-	GestorDeTickets();
-	~GestorDeTickets();
+	GestorDeTickets()=default;
+	~GestorDeTickets()=default;
 
 	void
-	agregarTicket(const Ticket& ticket) {
-		m_tickets.push_back(ticket);
+	agregarTicket(int id, std::string titulo, std::string descripcion, EstadoTicket estado,
+		Fecha fechaTicket) {
+		m_tickets.push_back(Ticket(id, titulo, descripcion, estado, fechaTicket));
 	};
 
 	void 
@@ -36,12 +37,13 @@ public:
 	void 
 	listarTickets() const {
 		for (const auto& ticket : m_tickets) {
-			std::cout << "ID: " << ticket.getId() << ", Título: " << ticket.getTítulo()
-			<< ", Descripción: " << ticket.getDescripcion() << ", Estado: " << 
+			std::cout << "ID: " << ticket.getId() << ", Titulo: " << ticket.getTitulo()
+			<< ", Descripcion: " << ticket.getDescripcion() << ", Estado: " << 
 			ticket.getEstado() << ", Fecha: " << 
 			ticket.getFechaTicket().toString(ticket.getFechaTicket().dia,
 			ticket.getFechaTicket().mes, ticket.getFechaTicket().anio,
-			ticket.getFechaTicket().hora) << std::endl;
+			ticket.getFechaTicket().hora, ticket.getFechaTicket().mins,
+			ticket.getFechaTicket().segs) << std::endl;
 		}
 	};
 

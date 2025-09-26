@@ -4,8 +4,8 @@
 class Ticket
 {
 public:
-	Ticket(int id, std::string título, std::string descripcion, EstadoTicket estado,
-		Fecha fechaTicket) : m_id(id), m_título(título), m_descripcion(descripcion),
+	Ticket(int id, std::string titulo, std::string descripcion, EstadoTicket estado,
+		Fecha fechaTicket) : m_id(id), m_titulo(titulo), m_descripcion(descripcion),
 		m_estado(estado), m_fechaTicket(fechaTicket) {
 	};
 	~Ticket() = default;
@@ -16,8 +16,8 @@ public:
 	};
 
 	std::string
-	getTítulo() const {
-		return m_título;
+	getTitulo() const {
+		return m_titulo;
 	};
 
 	std::string
@@ -37,8 +37,8 @@ public:
 
 	//Setters
 	void 
-	setTítulo(const std::string& título) {
-		m_título = título;
+	setTitulo(const std::string& titulo) {
+		m_titulo = titulo;
 	};
 
 	void 
@@ -58,7 +58,7 @@ public:
 	}
 private:
 	int m_id;
-	std::string m_título;
+	std::string m_titulo;
 	std::string m_descripcion;
 	EstadoTicket m_estado;
 	Fecha m_fechaTicket;

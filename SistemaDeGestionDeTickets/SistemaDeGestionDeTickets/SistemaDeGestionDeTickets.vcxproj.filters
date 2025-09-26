@@ -26,7 +26,7 @@
     <ClInclude Include="include\Ticket.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\GestorDeTicket.h">
+    <ClInclude Include="include\GestorDeTickets.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

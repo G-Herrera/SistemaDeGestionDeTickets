@@ -10,6 +10,8 @@ Fecha {
 	int mes;
 	int anio;
 	int hora;
+	int mins;
+	int segs;
 
 	void 
 	getFechaActual() {
@@ -19,12 +21,15 @@ Fecha {
 		mes = now->tm_mon + 1; // tm_mon is 0-11
 		anio = now->tm_year + 1900; // tm_year is years since 1900
 		hora = now->tm_hour;
-		std::cout << toString(dia, mes, anio, hora) << std::endl;
+		mins = now->tm_min;
+		segs = now->tm_sec;
+		std::cout << toString(dia, mes, anio, hora, mins, segs) << std::endl;
 	}
 
 	std::string
-	toString(int dia, int mes, int anio, int hora) {
-		return std::to_string(dia) + "/" + std::to_string(mes) + "/" + std::to_string(anio) + " " + std::to_string(hora) + ":00";
+	toString(int dia, int mes, int anio, int hora, int mins, int segs) {
+		return std::to_string(dia) + "/" + std::to_string(mes) + "/" + std::to_string(anio) + 
+		" " + std::to_string(hora) + ":" + std::to_string(mins) + ":" + std::to_string(segs);
 	};
 };
 
