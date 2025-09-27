@@ -4,10 +4,13 @@
 class Ticket
 {
 public:
+	Ticket() = default;
+	/*
 	Ticket(int id, std::string titulo, std::string descripcion, EstadoTicket estado,
 		Fecha fechaTicket) : m_id(id), m_titulo(titulo), m_descripcion(descripcion),
 		m_estado(estado), m_fechaTicket(fechaTicket) {
 	};
+	*/
 	~Ticket() = default;
 	//Getters
 	int
@@ -36,6 +39,11 @@ public:
 	};
 
 	//Setters
+	void 
+	setId(int id) {
+		m_id = id;
+	};
+
 	void 
 	setTitulo(const std::string& titulo) {
 		m_titulo = titulo;
