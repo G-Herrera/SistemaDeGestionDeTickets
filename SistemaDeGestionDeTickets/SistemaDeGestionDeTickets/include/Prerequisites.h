@@ -16,13 +16,14 @@ Fecha {
 	void 
 	getFechaActual() {
 		time_t t = time(0);
-		tm* now = localtime(&t);
-		dia = now->tm_mday;
-		mes = now->tm_mon + 1; // tm_mon is 0-11
-		anio = now->tm_year + 1900; // tm_year is years since 1900
-		hora = now->tm_hour;
-		mins = now->tm_min;
-		segs = now->tm_sec;
+		tm now;
+		localtime_s(&now, &t);
+		dia = now.tm_mday;
+		mes = now.tm_mon + 1; // tm_mon is 0-11
+		anio = now.tm_year + 1900; // tm_year is years since 1900
+		hora = now.tm_hour;
+		mins = now.tm_min;
+		segs = now.tm_sec;
 		std::cout << toString(dia, mes, anio, hora, mins, segs) << std::endl;
 	}
 

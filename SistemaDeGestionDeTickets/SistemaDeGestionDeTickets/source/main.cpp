@@ -6,11 +6,13 @@
 int main() {
 	
 	Fecha fechaActual;
-	int op,id, estadoInt;;
+	int op,id, estadoInt=1;
+	char opcion;
 	std::string titulo, descripcion;
 	EstadoTicket estado;
 	GestorDeTickets gestor;
-	Ticket nuevoticket;
+	Ticket ticketActual;
+	bool listaVacia, ticketEncontrado;
 	do {
 		fechaActual.getFechaActual();
 		system("cls");
@@ -20,7 +22,8 @@ int main() {
 		std::cout << "2. Listar tickets\n";
 		std::cout << "3. Editar ticket\n";
 		std::cout << "4. Eliminar ticket\n";
-		std::cout << "5. Salir\n";
+		std::cout << "5. Eliminar todos los tickets\n";
+		std::cout << "6. Salir\n";
 		std::cin >> op;
 		std::cin.ignore(); // Limpiar el buffer de entrada
 		switch (op) {
@@ -30,24 +33,41 @@ int main() {
 				std::getline(std::cin, titulo);
 				std::cout << "Ingrese la descripcion del ticket: ";
 				std::getline(std::cin, descripcion);
-				std::cout << "Ingrese el estado del ticket (1: PENDIENTE, 2: ENPROGRESO, 3: RESUELTO): ";
-				std::cin >> estadoInt;
 				estado = static_cast<EstadoTicket>(estadoInt);
-				gestor.agregarTicket(nuevoticket);
+				gestor.agregarTicket(ticketActual);
 				gestor.insertarTitulo(titulo);
+				gestor.insertarDescripcion(descripcion);
+				gestor.insertarEstado(estado);
+				gestor.insertarFecha(fechaActual);
+				
 				break;
 			case 2:
+				if (gestor.listaVacia()) {
+					std::cout << "No hay tickets para mostrar.\n";
+					system("pause");
+					break;
+				}
 				std::cout << "Listar tickets\n";
 				gestor.listarTickets();
 				system("pause");
 				break;
-			/*
 			case 3:
+				if (gestor.listaVacia()) {
+					std::cout << "No hay tickets para editar.\n";
+					system("pause");
+					break;
+				}
 				std::cout << "Editar ticket\n";
 				gestor.listarTickets();
-				std::cout << "Ingrese el ID del ticket a editar: ";
-				std::cin >> id;
-				std::cin.ignore(); // Limpiar el buffer de entrada
+				do {
+					std::cout << "Ingrese el ID del ticket a editar: ";
+					std::cin >> id;
+					std::cin.ignore(); // Limpiar el buffer de entrada
+					ticketEncontrado = gestor.ticketExiste(id);
+					if (!ticketEncontrado) {
+						std::cout << "Ticket no encontrado. Intente de nuevo.\n";
+					}
+				} while (!ticketEncontrado);
 				do
 				{
 					system("cls");
@@ -59,16 +79,21 @@ int main() {
 					std::cout << "5. Volver al menú principal\n";
 					std::cin >> op;
 					std::cin.ignore(); // Limpiar el buffer de entrada
+					ticketActual=gestor.obtenerTicket(id, ticketActual);
+					titulo = ticketActual.getTitulo();
+					descripcion = ticketActual.getDescripcion();
+					estado = ticketActual.getEstado();
+					fechaActual = ticketActual.getFechaTicket();
 					switch (op) {
 					case 1:
 						std::cout << "Ingrese el nuevo titulo del ticket: ";
 						std::getline(std::cin, titulo);
-						gestor.editarTicket(id, Ticket(id, titulo, descripcion, estado, fechaActual));
+						gestor.modificarTituloTicket(id, titulo);
 						break;
 					case 2:
 						std::cout << "Ingrese la nueva descripcion del ticket: ";
 						std::getline(std::cin, descripcion);
-						gestor.editarTicket(id, Ticket(id, titulo, descripcion, estado, fechaActual));
+						gestor.modificarDescripcionTicket(id, descripcion);
 						break;
 					case 3:
 						std::cout << "El estado del ticket se actualizará al siguiente en"; 
@@ -77,14 +102,28 @@ int main() {
 						std::cout << "Estado actualizado." << std::endl;
 						std::cout << "El nuevo estado es : " << gestor.getEstadoTicket(id) << std::endl;
 						system("pause");
-						/*
-						std::cout << "Ingrese el nuevo estado del ticket (1: PENDIENTE, 2: ENPROGRESO, 3: RESUELTO): ";
-						std::cin >> estadoInt;
-						std::cin.ignore(); // Limpiar el buffer de entrada
-						estado = static_cast<EstadoTicket>(estadoInt);
-						gestor.editarTicket(id, Ticket(id, titulo, descripcion, estado, fechaActual));
 						break;
 					case 4:
+						std::cout << "Ingrese el nuevo titulo del ticket: ";
+						std::getline(std::cin, titulo);
+						gestor.modificarTituloTicket(id, titulo);
+						std::cout << "Ingrese la nueva descripcion del ticket: ";
+						std::getline(std::cin, descripcion);
+						gestor.modificarDescripcionTicket(id, descripcion);
+						do {
+							std::cout << "Quieres mantener el estado actual? (s/n): ";
+							std::cin >> opcion;
+							std::cin.ignore(); // Limpiar el buffer de entrada
+							if (opcion == 's' || opcion == 'S') {
+								break;
+							}
+							else if (opcion =='n' || opcion == 'N') {
+								gestor.cambiarEstadoTicket(id);
+							}
+							else {
+								std::cout << "Opción no válida. Intente de nuevo.\n";
+							}
+						} while (opcion != 'n' && opcion != 'N' && opcion!='s' && opcion!='S');
 						break;
 					default:
 						if (op != 5) {
@@ -93,12 +132,42 @@ int main() {
 						break;
 					}
 				} while (op!=5);
-				op = 0;
-				break;*/
-				default:
+				break;
+			case 4:
+				if (gestor.listaVacia()) {
+					std::cout << "No hay tickets para eliminar.\n";
+					system("pause");
+					break;
+				}
+				std::cout << "Eliminar ticket\n";
+				gestor.listarTickets();
+				do {
+					std::cout << "Ingrese el ID del ticket a editar: ";
+					std::cin >> id;
+					std::cin.ignore(); // Limpiar el buffer de entrada
+					ticketEncontrado = gestor.ticketExiste(id);
+					if (!ticketEncontrado) {
+						std::cout << "Ticket no encontrado. Intente de nuevo.\n";
+					}
+				} while (!ticketEncontrado);
+				gestor.eliminarTicket(id);
+				std::cout << "Ticket eliminado.\n";
+				system("pause");
+				break;
+			case 5:
+				if (gestor.listaVacia()) {
+					std::cout << "No hay tickets para eliminar.\n";
+					system("pause");
+					break;
+				}
+				std::cout << "Eliminar todos los tickets\n";
+				gestor.eliminarTodosLosTickets();
+				std::cout << "Todos los tickets han sido eliminados.\n";
+				system("pause");
+				break;
+			default:
 				break;
 			}
-	} while (op!=5);
-	
+	} while (op!=6);
 	return 0;
 }

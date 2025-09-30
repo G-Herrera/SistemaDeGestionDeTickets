@@ -60,9 +60,8 @@ public:
 	};
 
 	void 
-	setFechaTicket() {
-		Fecha fechaActual;
-		m_fechaTicket = fechaActual;
+	setFechaTicket(Fecha fechaTicket) {
+		m_fechaTicket = fechaTicket;
 	}
 private:
 	int m_id;
