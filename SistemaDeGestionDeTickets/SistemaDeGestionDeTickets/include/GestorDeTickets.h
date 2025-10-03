@@ -124,7 +124,7 @@ public:
 		for (const auto& ticket : m_tickets) {
 			std::cout << "ID: " << ticket.getId() << ", Titulo: " << ticket.getTitulo()
 				<< ", Descripcion: " << ticket.getDescripcion() << ", Estado: " <<
-				ticket.getEstado() << ", Fecha: " <<
+				estadoToString(ticket.getEstado()) << ", Fecha: " <<
 				ticket.getFechaTicket().toString(ticket.getFechaTicket().dia,
 					ticket.getFechaTicket().mes, ticket.getFechaTicket().anio,
 					ticket.getFechaTicket().hora, ticket.getFechaTicket().mins,
@@ -257,6 +257,45 @@ public:
 			}
 		}
 		return "No encontrado";
+	};
+
+	/**
+		* @brief Convierte el estado del ticket a una cadena legible.
+		* @param estado El estado del ticket.
+		* @return Una cadena que representa el estado del ticket.
+		*
+		* Este metodo convierte el estado del ticket, representado por la enumeracion
+		* EstadoTicket, a una cadena legible para su visualizacion.
+		*/
+	std::string 
+	estadoToString(EstadoTicket estado) const {
+		switch (estado) {
+		case PENDIENTE:
+			return "PENDIENTE";
+		case ENPROGRESO:
+			return "EN PROGRESO";
+		case RESUELTO:
+			return "RESUELTO";
+		default:
+			return "DESCONOCIDO";
+		}
+	};
+
+	/**
+		* @brief Elimina todos los tickets completados.
+		*
+		* Este método permite eliminar todos los tickets que han sido resueltos, recorriendo
+		* la lista de tickets y eliminando aquellos que cumplen con la condición.
+		*/
+	void 
+	eliminarTicketsCompletados() {
+		m_tickets.erase
+		(std::remove_if(
+			m_tickets.begin(),
+			m_tickets.end(),
+			[](const Ticket& ticket) { return ticket.getEstado() == RESUELTO; }
+		),
+			m_tickets.end());
 	};
 
 	/*
